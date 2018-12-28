@@ -1,0 +1,52 @@
+Prometheus :
+------------------------------
+
+- targets are discovered via service discovery or static configuration
+
+-  It stores all scraped samples locally and runs rules over this data to either aggregate and record new time series from existing data or generate alerts.
+
+- achine-centric monitoring as well as monitoring of highly dynamic service-oriented architectures
+
+- collects metrics from monitored targets by scraping metrics HTTP endpoints on these target
+
+- There are three blocks of configuration in the example configuration file: global, rule_files, and scrape_configs
+
+- For cases where you must push, we offer the Pushgateway.
+
+- Besides stored time series, Prometheus may generate temporary derived time series as the result of queries.
+
+- Note: The colons are reserved for user defined recording rules. They should not be used by exporters or direct instrumentation	
+
+- Labels enable Prometheus's dimensional data model: any given combination of labels for the same metric name identifies a particular dimensional instantiation of that metric
+
+- up{job="<job-name>", instance="<instance-id>"}: 1 if the instance is healthy, i.e. reachable, or 0 if the scrape failed.
+
+- Metric types : 
+Counter
+Gauge
+Histogram
+Summary
+
+- Grouping of targets is possible in prometheus such as development, production
+- config files : prometheus.yml
+- custome metrics : prometheus.rules.yml
+- add rule_files: entry in prometheus.yml
+
+- ./prometheus -h: to view all command line flags
+
+- Prometheus can reload its configuration at runtime
+
+- Targets may be statically configured via the static_configs parameter or dynamically discovered using one of the supported service-discovery mechanisms.
+
+- The rule files can be reloaded at runtime by sending SIGHUP to the Prometheus process
+
+- use promtool for checking syntax of prometheus rules file
+
+- recording rules and alerting rules
+
+-  When series are deleted via the API, deletion records are stored in separate tombstone files (instead of deleting the data immediately from the chunk files).
+ 
+- --storage.tsdb.path: This determines where Prometheus writes its database. Defaults to data/.
+--storage.tsdb.retention: This determines when to remove old data. Defaults to 15d.
+
+- Prometheus's local storage is not meant as durable long-term storage.

@@ -1,0 +1,7 @@
+Integrating foreman with open source puppet
+Automatic code deployment from version control on puppet master using r10k
+Implementing hooks with git
+Prometheus configuration for windows and linux,Customized rules and alerting,Sonar configuration for windows nodes
+Bare metal provisioning using razor open source tool.(Implemented esxi on bare metal)
+Host provisioning on vsphere using foreman(vcenter and esxi)
+	

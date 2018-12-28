@@ -1,0 +1,13 @@
+Hands on to be done:
+- variable scope
+- defined types
+- roles and profiles with hiera
+- check pdk
+- install 4.10 opensource with foreman check puppetdb and all
+- hiera lookup
+- hiera ,roles and profile,modules data all in one and integrate git and code manager
+- study mcollective
+- check whether code manager exists for puppet open source 4.10
+- create a recusrsive direcory 
+- yanking lines in vi editor
+	

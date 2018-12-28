@@ -1,0 +1,22 @@
+Call agenda :
+
+VMware VSphere:
+1. Esxi - type 1 hypervisor-bare metal
+2. Vcenter - VM provisioning ,(foreman- vcenter ip)
+	
+Options :
+oVirt - Open Source virtualization, KVM  ,foreman support
+
+------------------------------------------------------------
+
+AFFOYZC15
+ZC20
+HDFCOFFER
+20first
+almcard1350
+zc20
+
+
+Our task:
+1. Installing hypervisor ESXI
+2. provisioning VM's on esxi

@@ -1,0 +1,17 @@
+Doubts
+
+- How are we going to maintain development staging environments (r10k with webhook)
+- classfication options (hiera or foreman)
+- suggested version of hiera
+- data options(hiera,functions,foreman)
+- DNS to be taken care by?? (we will need fqdns)
+- Installing agents on 700 servers - go for python script  or write puppet task and execute using bolt(not sure)
+- code manager is not supported in opensource
+- Are we going to use multiple masters??
+- Razor
+- backup
+
+
+
+---------------------------------------------------------------------
+Certificates take care in HA

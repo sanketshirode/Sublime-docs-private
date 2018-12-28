@@ -1,0 +1,24 @@
+Puppet notes:
+
+- iteration functions
+- defaults to be used for resources
+- create resources function
+- resource collectors
+- metaparemeters(schedule)
+- functions to get data
+- autosigning agent certs
+- components class should not use value directly from hiera
+- data for modules goes from profile by pulling it from hiera
+- puppetfile for installing modules	in environments 
+- whenever a chnage is made in hiera restart puppet
+- code manager manages and deploys code on master as per environments and we just need to push the changes in git
+- use control repository for maintaining environment and code
+- code manager overwrites existing environment
+- while deploying using code manager dependencies needs to be explicitly specified in puppetfile
+- Optional data type allows to pass the mentioned type or undef
+- puppet queues up multiple requests for service refresh and restarts the service only once
+- If hiera is used for classification then site.pp shouldn't have any node definintion
+- for additional debug messages run puppet with --profile flag or --logdest and --debug
+- create seperate repo for each module and add the module to master using Puppetfile from control repo
+- Control repo consists of puppetfile ,hieradata and site.pp for roles invocations
+- puppetlabs control repo is available

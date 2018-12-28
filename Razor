@@ -1,0 +1,149 @@
+Razor:
+creating postgresql database server
+create a database user (createuser -P razor
+creating a database (createdb -O razor razor_prd)
+check razor connection psql -l -U razor razor_prd
+prints a list of databases including razor_prd
+edit /etc/puppetlabs/razor-server/config.yaml
+production:
+  database_url: 'jdbc:postgresql:razor_prd?user=razor&password=user'
+repo_store_root : location to store os repos
+
+Installing razor-server using packages
+yum install http://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm
+yum install razor-server
+
+load the Razor database schema into your PostgreSQL database
+sudo -u razor /opt/puppetlabs/bin/razor-admin -e production migrate-database
+
+Start the razor-server
+service razor-server start
+
+
+Downloading the microkernel:
+https://s3-us-west-2.amazonaws.com/razor-releases/microkernel-008.tar
+
+extract it in the repo_store_root directory which will create microkernel folder
+tar -xzf microkernel-008.tar
+
+razor client installation
+gem install razor-client
+
+Installing TFTP server
+sudo yum -y install tftp tftp-server* xinetd*
+
+edit /etc/xinetd.d/tftp - set disable to no and add -c option into server_args if you need to upload files to TFTP server from client.
+
+sudo chmod -R 777 /var/lib/tftpboot
+
+edit usr/lib/systemd/system/tftp.service
+add the install unit  if doesn't exist
+[Install]
+WantedBy=multi-user.target
+add -c in ExecStart entry
+
+start and enable tftp and xinetd services
+
+set selinux to permissive
+
+check the tftp permissions in SELinux:
+getsebool -a | grep tftp
+
+If the TFTP write is off
+sudo setsebool -P tftp_anon_write 1
+sudo setsebool -P tftp_home_dir 1
+
+Open the tftp port
+sudo firewall-cmd --permanent --add-port=69/udp
+sudo firewall-cmd --zone=public --add-service=tftp --permanent
+sudo firewall-cmd --reload
+
+
+Download http://boot.ipxe.org/undionly.kpxe
+
+http://razor-server-ip:8150/api/microkernel/bootstrap?nic_max=8
+
+put both th files in /var/lib/tftpboot
+
+edit the dhcp server conf file
+ subnet 192.168.1.0 netmask 255.255.255.0 {
+  range 192.168.1.200 192.168.1.250;
+  option subnet-mask 255.255.255.0;
+  if exists user-class and option user-class = "iPXE" {
+    filename "bootstrap.ipxe";
+  } else {
+    filename "undionly.kpxe";
+  }
+  next-server 192.168.1.100;-- tftp server ip address
+}
+
+upload esxi iso to razor server in tmp directory and change permissions 
+it should be readable to razor user
+
+create repo
+razor create-repo --name=esxi-6.7 --iso-url file:///tmp/VMware-VMvisor-Installer-6.7.0.update01-10302608.x86_64.iso --task vmware_esxi
+
+razor repos output
++----------------+-------------------------------------------------------------------------+-----+-------------+
+| name           | iso_url                                                                 | url | task        |
++----------------+-------------------------------------------------------------------------+-----+-------------+
+| esxi-6.7-image | file:///tmp/VMware-VMvisor-Installer-6.7.0.update01-10302608.x86_64.iso | --- | vmware_esxi |
++----------------+-------------------------------------------------------------------------+-----+-------------+
+
+create broker
+razor create-broker --name=noop --broker-type=noop
+
+razor brokers output
++------+-------------+---------------+----------+
+| name | broker_type | configuration | policies |
++------+-------------+---------------+----------+
+| noop | noop        | (none)        | 1        |
++------+-------------+---------------+----------+
+
+TAgs most important matches which polict to implement for which nodes
+create tag
+
+razor create-tag --name vmware-esxi-6.7 --rule '[">=",["num", ["fact","memorysize_mb"]],4096]'
+
+razor tags output
+
++-----------------+--------------------------------------------------+-------+----------+
+| name            | rule                                             | nodes | policies |
++-----------------+--------------------------------------------------+-------+----------+
+| vmware-esxi-6.7 | [">=", ["num", ["fact", "memorysize_mb"]], 4096] | 1     | 1        |
++-----------------+--------------------------------------------------+-------+----------+
+
+policy.json file
+{
+  "name": "vmware-for-esxi",
+  "repo": "esxi-6.7-image",
+  "task": "vmware_esxi",
+  "broker": "noop",
+  "enabled": true,
+  "hostname": "host${id}.prospera.com",
+  "root_password": "Abcd#0011",
+  "max_count": 20,
+  "tags": ["vmware-esxi-6.7"]
+}
+
+razor create-policy --json policy.json 
+
+razor policies output
++-----------------+----------------+-------------+--------+---------+-----------+-----------------+-------+
+| name            | repo           | task        | broker | enabled | max_count | tags            | nodes |
++-----------------+----------------+-------------+--------+---------+-----------+-----------------+-------+
+| vmware-for-esxi | esxi-6.7-image | vmware_esxi | noop   | true    | 20        | vmware-esxi-6.7 | 1     |
++-----------------+----------------+-------------+--------+---------+-----------+-----------------+-------+
+
+make sure all the installed servers are running tftp,xinetd,razor-server,postgresql server,
+
+
+created one symlink for pelinux.0 file in /var/lib/tftpboot(not used try if above steps are not working )
+
+
+Memory execution protection needs to be enabled in bios
+---------------------------------------
+
+repo_store_root: /opt/puppetlabs/server/data/razor-server/repo
+http://mirror.nbrc.ac.in/centos/7.6.1810/isos/x86_64/CentOS-7-x86_64-Minimal-1810.iso
+technodrone.blogspot.com/2013/12/installing-esxi-with-razor.html

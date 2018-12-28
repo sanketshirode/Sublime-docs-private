@@ -1,0 +1,51 @@
+Task list
+- Try and create webhooks (It will require public ip)
+- add user only if not present else change password of existing user
+- try custom facts
+- try windows task scheduler
+- try creating user on windows
+- try changing root password
+- prometheus
+- selector statement
+---------------------------------
+
+- checking bare metal provisioning
+- is it possibe to use existing certificates ?
+- script for increasing disk size
+- /opt/puppetlabs/server/data/razor-server/repo
+- dhclient -v to find dhcp server address		
+- vm provisioning on vsphere
+- terraform to provision vms frm=om existing vms
+192.168.1.133 ZFqqjTJQ79hZSFkj
+nqfyQkSpD7yZ8_E
+
+MH18112748815500
+
+changes to proxmox:
+
+=====================================================
+create the document for host provisioning using foreman(installation media,os,provisioning template,config groups,host groups)
+create video for assigning all the classes to newly created host)(hostname and the name of vm while creating in foreman should be same)
+Installing vcenter in esxi document
+
+
+creating template in vcenter
+try assigning classes
+
+----------------------------------------------------------------------------------------------
+									Host Provisioning prerequisites
+									1. vmware plugin installation d
+									2. compute resource config d
+									3. Installation media d
+									4. OS d
+									5. provisioning template d
+									6. Finish template d
+									7. creating template in vcenter
+									8. create image in a compute reource
+									9. config groups d
+									10. host groups d
+									11. Subnet d
+									12. Host Provisioning
+-----------------------------------------------------------------------------------------------
+FreeBSD (mfsBSD) finish template
+									
